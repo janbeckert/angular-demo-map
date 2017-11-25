@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html ng-app="mapApp">
+    <head>
+        <title>Angular JS data binding game map</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js"></script>
+        <style>
+            div.map {
+                background-color: green;
+                position: relative;
+            }
+            div.building {
+                width : 120px;
+                height: 120px; 
+                position: absolute;
+                background-color: yellow;
+            }
+            div.path {
+                width : 60px;
+                height: 60px; 
+                position: absolute;
+                background-color: gray;
+            }
+        </style>
+        <script>
+            angular.module('mapApp', [])
+                .controller('MapCtrl', function($scope){
+                    
+                    $scope.newBn = "";
+                    $scope.newBx = $scope.newBy = 0;
+                    
+                    $scope.map = {
+                        width : 15,
+                        height: 10
+                    };
+                    
+                    
+                    $scope.addBuilding = function () {
+                        $scope.buildings.push({
+                            name: $scope.newBn,
+                            x: $scope.newBx,
+                            y:$scope.newBy
+                        });
+                    };
+                    $scope.addPath = function () {
+                        $scope.path.push({
+                            x: $scope.newBx,
+                            y:$scope.newBy
+                        });
+                    };
+                    $scope.clearMap = function() {
+                        $scope.buildings = [];
+                        $scope.path = [];
+                    };
+                    
+                    
+                    // initial objects
+                    $scope.buildings = [
+                        {
+                            name: "warehouse",
+                            x : 2,
+                            y : 0
+                        },
+                        {
+                            name: "church",
+                            x : 7,
+                            y : 5
+                        }
+                        
+                    ];
+                    
+                    $scope.path = [
+                        {x: 4, y : 1},
+                        {x: 4, y : 2},
+                        {x: 4, y : 3},
+                        {x: 4, y : 4},
+                        {x: 4, y : 4},
+                        {x: 5, y : 4},
+                        {x: 6, y : 4},
+                        {x: 7, y : 4},
+                        {x: 8, y : 4},
+                        {x: 9, y : 4},
+                        {x: 9, y : 5},
+                        {x: 9, y : 6},
+                    ];
+                    
+                });
+            
+        </script>
+    </head>
+    <body>
+        <div ng-controller="MapCtrl">
+            <h1>
+                Angular JS data binding game map
+            </h1>
+
+
+            <div class="map" style="width : {{map.width*60}}px;height: {{map.height*60}}px;">
+               
+                <div ng-repeat="b in buildings" class="building" style="top: {{b.x * 60}}px; left: {{b.y * 60}}px">
+                    {{b.name}} ({{b.x}}|{{b.y}})
+                </div>
+
+                <div ng-repeat="p in path" class="path" style="top: {{p.x * 60}}px; left: {{p.y * 60}}px"></div>
+               
+            </div>
+
+
+            <h2>Add building</h2>
+            Name: <input type="text" ng-model="newBn" />
+            <br />
+            Position: <br />
+            X:<input type="number" ng-model="newBx" />
+            <br />
+            Y: <input type="number" ng-model="newBy"  />
+            <br />
+            <button ng-click="addBuilding()" ng-disabled="!newBn">add building</button>
+            
+            <button ng-click="addPath()" ng-disabled="newBn">add path</button>
+            <br />
+           
+            List of buildings:<br />
+            <ul>
+                <li ng-repeat="b1 in buildings">Building {{b1.name}}</li>
+            </ul>
+            <span ng-show="!buildings.length">no buildings placed</span>
+            
+            <p>
+                {{path.length}} path elements placed
+            </p>
+            <button ng-click="clearMap()">clear map</button>
+        </div>
+    </body>
+</html>
